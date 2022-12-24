@@ -91,6 +91,29 @@ typedef struct _uint64_t {
     QWORD     _uint64_t:64;
 } _uint64_t; // (dq)
 
+typedef enum type_data {
+    _ui8, 
+    _ui16, 
+    _ui32, 
+    _ui64,
+    null_ptr,
+    _i8,
+    _i16, 
+    _i32, 
+    _i64, 
+} type_data;
 
+typedef union multi_type
+{
+    ui8  uint8_t;
+    ui16 uint16_t;
+    ui32 uint32_t;
+    ui64 uint64_t;
+    void *null_ptr;
+    i8   int8_t;
+    i16  int16_t;
+    i32  int32_t;
+    i64  int64_t;
+} multi_type;
 
 #endif

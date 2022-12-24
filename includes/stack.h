@@ -1,7 +1,6 @@
 #ifndef _STACK_H
     #define _STACK_H	1
 
-    #include "stack.c"
     #include "type_data_c.h"
 
     #ifndef __DEV_OS_ON_ 
@@ -44,10 +43,10 @@
     */
     #define CreateStack(type_data, name) type_data *name
 
-    typedef struct celda {
+    typedef struct var {    
         ui16 base;
         ui16 final;
-    } celda;
-
-
+    } var;
+    
+#include "stack.c"
 #endif
