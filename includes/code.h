@@ -48,7 +48,6 @@ typedef struct
  * los indices de inicio para los archivos, theend_indices.
  * el indice de inicio del archivo 1 y el indice de final es
  * start_indices[0] y theend_indices[0].
- *
  */
 
 OutputFile InitFileOutput(ui8 *coments, _uint32_t size);

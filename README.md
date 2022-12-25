@@ -20,6 +20,13 @@ typedef struct MTF
     indice **start_indices;  // indices de inicio
     indice **theend_indices; // indices de final
 } MTF;
+/*
+ * MTF almacena el numero de archivos que se contiene
+ * en el contenedor(n_file). start_indices contiene
+ * los indices de inicio para los archivos, theend_indices.
+ * el indice de inicio del archivo 1 y el indice de final es
+ * start_indices[0] y theend_indices[0].
+ */
 ```
 |nombre             | Tamaño     |
 |:-----------------:|:----------:|
@@ -77,7 +84,9 @@ typedef struct indice
 
 ### Estructura sector:
 
-La estructura sector
+La estructura sector almacena el ID al que pertenece el mismo en su campo `id_file` que es una estructura de `16bits`. Contiene el inicio del sector en su campo `start_sector` y el final del mismo en su campo `theend_sector`, ambos son estructuras de `16bits`. El campo `theend_sector` contiene unvalor de `16bits` el cual es el resultado de sumar el `start_sector`(inicio del sector) mas el contenido del sector.
+`start_sector = 16` y el contenido del sector son `16bytes`.
+`theend_sector = start_sector + 16 = 32`.
 
 
 ----
@@ -102,3 +111,34 @@ typedef struct sector
 |` 16 + 16 + 16 = 48Bits = 6Bytes ` |
 
 ----
+
+# code.h y code.c
+
+Estas estructuras mencionadas anteriormente se encuentran definidas en los archivos `code.h` y `code.c`. Tambien situamos definido lo siguiente:
+
+```C
+#define MAX_POINT (ui16)0xffff // 65536
+
+#define MAX_NAME_BYTES (ui32)16 // cantidad maxima de bytes como nombre de archivos
+#define VERSION (db *)"\x42\x48\x00\x01" // "BH10" = Black Hat 1.0
+#define EXTENSION (db *)".bh"
+```
+
+- Donde se define la macro `MAX_POINT` como un valor del tipo `unsigned short = uint16_t` de valor `0xffff`.
+
+- Se define la macro `MAX_NAME_BYTES` el cual es un valor del tipo `unsigned int = uint32_t` que almacena el valor maximo para los nombres de archivo + extension que es de `16Bytes`.
+
+- Se define en la macro `VERSION` un conjunto de valores del tipo `unsigned char = uint8_t` el cual se escribe inicialmente en el archivo contenedor e identifica este tipo de archivos, tmb contiene la version del mismo.
+
+- Se define en la macro `EXTENSION` un conjunto de valores del tipo `unsigned char = uint8_t` el cual es la extension de los archivos contenedores.
+
+----
+Como funciones encontramos las siguientes:
+```C
+OutputFile InitFileOutput(ui8 *coments, _uint32_t size);
+void write_MTF(MTF *MasterTableFile, OutputFile *File);
+void printOutputFile(OutputFile File);
+void printMTF(MTF MasterTableFiles);
+void printIndice(indice _indice);
+void printSector(sector _sector);
+```
