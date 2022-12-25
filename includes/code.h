@@ -22,14 +22,14 @@ typedef struct indice
     ui8 name_file[MAX_NAME_BYTES]; // nombre del archivo inicial(maximo 16Bytes)
     _uint16_t id_file;             // id del archivo(maximo 65536)
     _uint16_t n_sectores;          // numero de sectores del indice(maximo 65536)
-    sector *sectores;              // sectores que contiene este indice
+    sector **sectores;              // sectores que contiene este indice
 } indice;
 
 typedef struct MTF
 {                           // Master Table File
     _uint16_t n_file;       // numero de archivos contenidos(maximo 65536)
-    indice *start_indices;  // indices de inicio
-    indice *theend_indices; // indices de final
+    indice **start_indices;  // indices de inicio
+    indice **theend_indices; // indices de final
 } MTF;
 
 typedef struct
@@ -48,10 +48,6 @@ typedef struct
  * los indices de inicio para los archivos, theend_indices.
  * el indice de inicio del archivo 1 y el indice de final es
  * start_indices[0] y theend_indices[0].
- *
- *
- *
- *
  *
  */
 

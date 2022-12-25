@@ -14,6 +14,8 @@ void write_MTF(MTF *MasterTableFile, OutputFile *File)
      */
 }
 
+
+
 OutputFile InitFileOutput(ui8 *coments, _uint32_t size)
 {
     OutputFile File = {
@@ -35,6 +37,11 @@ OutputFile InitFileOutput(ui8 *coments, _uint32_t size)
 
     return File;
 }
+
+
+
+
+
 
 void printSector(sector _sector)
 {
