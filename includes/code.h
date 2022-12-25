@@ -51,7 +51,7 @@ typedef struct
  */
 
 OutputFile InitFileOutput(ui8 *coments, _uint32_t size);
-void write_MTF(MTF *MasterTableFile, OutputFile *File);
+void write_MTF(MTF MasterTableFile, OutputFile File);
 void printOutputFile(OutputFile File);
 void printMTF(MTF MasterTableFiles);
 void printIndice(indice _indice);
