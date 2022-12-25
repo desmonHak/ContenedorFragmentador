@@ -300,3 +300,96 @@ void printUint16Char(dw *string, _uint32_t size);
  */
 ```
 ----
+
+# Recorriendo directorios
+
+Para poder recorrer los directorios y ubicar cada archivo usaremos las siguientes estructuras de datos:
+
+#### Estructura `tree`:
+```C
+typedef struct tree
+{
+    VarPoint_define(db, root_dir)
+    // directorio raiz
+
+    nodo *subNodos;
+    // lista de sub Nodos que contiene este Arbol
+} tree;
+```
+Esta estructura almacena el nombre del directorio inicial que es llamado en este caso `root_dir`. Tambien almacena una lista de nodos de distintos niveles que pueden ser carpetas o archivos en el array de nodos `subNodos`.
+
+
+#### Estructura `nodo`:
+```C
+typedef struct nodo
+{
+    VarPoint_define(db, this_name_file_or_dir)
+   // nombre del archivo o directorio actual
+
+    VarPoint_define(db, back_name_file_or_dir)
+    // nombre del directorio anterior
+
+    bool file_or_dir;
+    // false si es un directorio, true si es un archivo
+
+    nodo *subNodos;
+    // lista de sub Nodos que contiene este Nodo
+} nodo;
+```
+
+Esta estructura almacena el nombre del directorio actual o archivo en el array `this_name_file_or_dir` y el del directorio anterior en el array `back_name_file_or_dir`. Se usa una vaarible boleana llamada `file_or_dir` para almacenar si este nodo es un archivo o un directorio. Si es `true` este nodo es un archivo y si es `false` es un directorio. Los nodos archivos no tienen asignados ningun valor para el array `subNodos`. El array `subNodos` almacena los subNodos del Nodo directorio actual.
+
+- `Algoritmo Matrioshka inverso`: Para obtener la ruta de un nodo archivo, se ubica el archivo mediante una busqueda en el arbol, una vez situado el nodo archivo, se recorer los nodos directorios que se contienen entre cada uno, mediante el campo `back_name_file_or_dir`. Es decir el nombre de la carpeta que contiene el archivo, la carpeta que contiene la carpeta y asi sucesivamente:
+
+```mermaid 
+flowchart TB
+    subgraph .
+        direction TB
+
+        Carpeta_padre
+
+        SubCarpeta1
+        SubCarpeta1.1
+
+        SubCarpeta2
+        SubCarpeta2.1
+        SubCarpeta2.2
+        
+        archivo1
+        archivo2
+        archivo3
+        archivo4
+
+        Carpeta_padre --> SubCarpeta1
+        SubCarpeta1 --> SubCarpeta1.1
+
+        Carpeta_padre --> SubCarpeta2
+        SubCarpeta2 --> SubCarpeta2.1
+        SubCarpeta2 --> SubCarpeta2.2
+
+        SubCarpeta2.2 --> archivo1
+        SubCarpeta2.2 --> archivo2
+
+        SubCarpeta2.1 --> archivo3
+
+        Carpeta_padre --> archivo4
+    end
+```
+
+1. En este diagarama nuestro nodo raiz se llama `Carpeta_padre`. Como subnodos directorios contiene el subnodo llamado `SubCarpeta1` y `SubCarpeta2`, ademas cuenta con un subNodo archivo `archivo4`. 
+
+2. El subNodo `SubCarpeta1` contiene un `SubCarpeta1.1`.
+
+3. El subNodo `SubCarpeta2` contiene a su vez dos subNodos directorios llamados `SubCarpeta2.2` y `SubCarpeta2.1`.
+
+4. El subNodo `SubCarpeta2.1` contiene un subNodo archivo llamado `archivo3`.
+
+5. El subNodo `SubCarpeta2.3` contiene dos subNodos archivos llamado `archivo2` y `archivo3`.
+
+<br>
+
+1. Si queremos ubicar el archivo llamado `archivo3`, recorremos el arbol de la siguiente manera. Entramos en la carpeta `SubCarpeta1` y observamos si hay algun archivo o directorio con la misma longitud de nombre que el que buscamos, de no ser asi nos metemos en la carpeta `SubCarpeta1.1` y volvemos arevisar si hay mas nodos, de ser asi, revisamos la longitud de sus nombre y si nada encaja con lo que se busca se descarta esta rama directamente, y se vuelve al ultimo nivel donde no allamos accedido a todos sus elementos, es decir, nos vamos a la `SubCarpeta2`.
+
+2. Una vez dentro de la `SubCarpeta2`, volvemos a revisar si hay al menos un nodo, de ser asi revisamos la longitud de los nombres de archivos y carpetas de este nivel y si nada coincide seguimos con el siguiente. Una vez en la `SubCarpeta2.2` realizamos el mismo proceso de busqueda, si se llegara a dar el caso de que alguno de los nodos tenga la misma longitud de nombre se comprueba los nombres directamente. Al ver que no encontramos el 'archivo3', volvemos al subNodo `SubCarpeta2` y nos metemos en el subNodo `SubCarpeta2.1`, realizamos los mismo procesos de busquedas y encontramos nuestro nodo archivo `archivo3`.
+
+3. Una vez tenemos ubicado nuestro nodo archivo. usaremos una vaarible para almacenar la ruta completa del archivo, para obtener esta ruta, desde el nodo archivo iremos a su nodo anterior que es la `SubCarpeta2.1`, y agregamos esta a la ruta quedando `SubCarpeta2.1\`, realizamos lo mismo, viajamos a su carpeta anterior que es la `SubCarpeta2` y la agregamos a la ruta quedando `SubCarpeta2\SubCarpeta2.1\`, y realizamos de nuevo este proceso con la carpeta anterior la cual ya es el nodo padre `Carpeta_padre` y lo agremos a la ruta, por tanto nuestro archivo esta en la ruta relativa `Carpeta_padre\SubCarpeta2\SubCarpeta2.1\`.

@@ -10,8 +10,8 @@ typedef unsigned int           ui32;
 typedef signed long long int    i64;
 typedef unsigned long long int ui64;
 
-#define true	1
-#define false	0
+
+typedef enum {false, true} bool;
 
 #ifndef NULL
 #define NULL    0
@@ -115,5 +115,12 @@ typedef union multi_type
     i32  int32_t;
     i64  int64_t;
 } multi_type;
+
+#ifndef VarPoint_define
+#define VarPoint_define(type_data, name) struct  { \
+    type_data* pointer; \
+    _uint32_t size; \
+} name; 
+#endif
 
 #endif

@@ -36,10 +36,10 @@ typedef struct
 {
     // uint8_t version[4]; // Version del software
     VarPoint_define(db, version)
-        // uint8_t name_file[MAX_NAME_BYTES]; // nombre del archivo de salida(Maximo 16Bytes)
-        VarPoint_define(db, name_file)
-        // uint8_t *coments; // comentarios opcionales
-        VarPoint_define(db, coments)
+    // uint8_t name_file[MAX_NAME_BYTES]; // nombre del archivo de salida(Maximo 16Bytes)
+    VarPoint_define(db, name_file)
+    // uint8_t *coments; // comentarios opcionales
+    VarPoint_define(db, coments)
 } OutputFile;
 
 /*
