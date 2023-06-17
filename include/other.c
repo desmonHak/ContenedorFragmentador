@@ -62,7 +62,7 @@ void printUint8Hex(db *string, _uint32_t size)
     */
     #define WORD_SIZE 256/8
     #define BLOCK_SLICES (256*4)/8
-    printf_color("\t #{FG:red}#{BG:green}|#{BG:reset}");
+    printf_color("\t #{BG:green}#{FG:red}|#{BG:reset}");
     for (_uint32_t i = {0}; i._uint32_t < size._uint32_t; i._uint32_t++)
     {
         //putchar(chars[string[i._uint32_t] / 16]);
@@ -80,7 +80,7 @@ void printUint8Hex(db *string, _uint32_t size)
 
         /*printf_color("#{FG:%d;%d;%d}#{BG:%d;%d;%d} %.2X #{BG:green}#{FG:red}|#{BG:reset}", \
             Avalue1, Avalue2, Avalue3,  Bvalue1, Bvalue2, Bvalue3, string[i._uint32_t]);*/
-        printf_color("#{FG:%d;%d;%d} %.2X #{BG:green}#{FG:red}|#{BG:reset}", \
+        printf_color("#{BG:%d;%d;%d} %.2X #{BG:green}#{FG:red}|#{BG:reset}", \
             Avalue1, Avalue2, Avalue3,  string[i._uint32_t]);
 
         //printf_color(" #{FG:red}#{BG:green}|#{BG:reset}");
@@ -89,7 +89,7 @@ void printUint8Hex(db *string, _uint32_t size)
             printf_color("\n\t");
         }
         if ((i._uint32_t+1) % (WORD_SIZE / 8) == 0 && i._uint32_t+1 < size._uint32_t)
-            printf_color(" #{FG:red}#{BG:green}|#{BG:reset}");
+            printf_color(" #{BG:green}#{FG:red}|#{BG:reset}");
     }
 }
 
@@ -121,17 +121,24 @@ void printUint16Hex(dw *string, _uint32_t size)
     #undef BLOCK_SLICES
     #define WORD_SIZE 256/16
     #define BLOCK_SLICES (256*4)/16
-    printf(" |");
+    printf_color(" #{BG:green}#{FG:red}|#{BG:reset}");
     for (_uint32_t i = {0}; i._uint32_t < size._uint32_t; i._uint32_t++)
     {
+        unsigned int Avalue1, Avalue2, Avalue3;//, Bvalue1, Bvalue2, Bvalue3;
+        int values[] = {12, 19, 5, 9, 3, 16};
+        //int _size = sizeof(values) / sizeof(values[0]);
+
+        generate_three_values(string[i._uint32_t], &Avalue1, &Avalue2, &Avalue3, values[0],values[1],values[2],values[3],values[4],values[5]);
+ 
         //putchar(chars[string[i._uint32_t] / 16]);
         //putchar(chars[string[i._uint32_t] % 16]);
         //putchar('|');
-        printf("%.4X|", string[i._uint32_t]);
+        printf_color("#{BG:%d;%d;%d} %.4X #{BG:green}#{FG:red}|#{BG:reset}", \
+            Avalue1, Avalue2, Avalue3,  string[i._uint32_t]);
         if ((i._uint32_t+1) % (BLOCK_SLICES /16) == 0)
-            printf("\n");
+            printf("\n\t");
         if ((i._uint32_t+1) % (WORD_SIZE /16) == 0 && i._uint32_t+1 < size._uint32_t)
-            printf(" |");
+            printf_color(" #{BG:green}#{FG:red}|#{BG:reset}");
     }
 }
 void printUint16Char(dw *string, _uint32_t size)

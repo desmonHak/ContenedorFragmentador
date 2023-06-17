@@ -75,11 +75,11 @@ void printSector(sector *_sector)
     puts(" ");
 
     v = _sector->start_sector._uint16_t;
-    printf("Inicio y final del sector: (%d-%d) = (", v, _sector->theend_sector._uint16_t);
+    printf("Inicio y final del sector: (%d - %d) = (", v, _sector->theend_sector._uint16_t);
     printUint16Hex(&v, (_uint32_t){0x1});
 
     v = _sector->theend_sector._uint16_t;
-    putchar('-');
+    printf(" -");
     printUint16Hex(&v, (_uint32_t){0x1});
     puts(") ");
 }
@@ -128,16 +128,16 @@ void printMTF(MTF MasterTableFiles)
     * de cada archivo contenido en el archivo contenedor.
     */
 //    ui16 v = MasterTableFiles.n_file._uint16_t;
-    printf("[+] Numero archivos contenidos: ");
+    printf_color("#{FG:lgreen}[#{FG:lblue}+#{FG:lgreen}]#{FG:lwhite} Numero archivos contenidos: ");
     //printUint16Hex(&v, (_uint32_t){0x1});
     printf("%.2X", 0x1);
     puts("\n");
 
     for (ui16 i = 0; i < MasterTableFiles.n_file._uint16_t; i++)
     {
-        printf("[+] Valores del indice start del MTF: \n");
+        printf_color("#{FG:lgreen}[#{FG:lblue}+#{FG:lgreen}]#{FG:lwhite} Valores del indice start del MTF: \n");
         printIndice(MasterTableFiles.start_indices[i]);
-        printf("[+] Valores del indice the end del MTF: \n");
+        printf_color("#{FG:lgreen}[#{FG:lblue}+#{FG:lgreen}]#{FG:lwhite} Valores del indice the end del MTF: \n");
         printIndice(MasterTableFiles.theend_indices[i]);
     }
 }
@@ -152,15 +152,15 @@ void printOutputFile(OutputFile File)
     * Imprime los valores de los ID`s de los sectores.
     * El valor del sector de inicio y el del sector final.
     */
-    printf("[!] Comentario: '%s' \t\tsize: %d\n", File.coments.pointer, File.coments.size._uint32_t);
+    printf_color("#{FG:lgreen}[#{FG:lyellow}!#{FG:lgreen}]#{FG:lwhite} Comentario: '%s' \t\tsize: %d\n", File.coments.pointer, File.coments.size._uint32_t);
     printUint8Hex(File.coments.pointer, File.coments.size);
     puts(" ");
 
-    printf("[!] Nombre del archivo final: '%s' \tsize: %d\n", File.name_file.pointer, File.name_file.size._uint32_t);
+    printf_color("#{FG:lgreen}[#{FG:lyellow}!#{FG:lgreen}]#{FG:lwhite}Nombre del archivo final: '%s' \tsize: %d\n", File.name_file.pointer, File.name_file.size._uint32_t);
     printUint8Hex(File.name_file.pointer, File.name_file.size);
     puts(" ");
 
-    printf("[!] Version del archivo: '%s' \t\tsize: %d\n", File.version.pointer, File.version.size._uint32_t);
+    printf_color("#{FG:lgreen}[#{FG:lyellow}!#{FG:lgreen}]#{FG:lwhite} Version del archivo: '%s' \t\tsize: %d\n", File.version.pointer, File.version.size._uint32_t);
     printUint8Hex(File.version.pointer, File.version.size);
     puts(" ");
 }
